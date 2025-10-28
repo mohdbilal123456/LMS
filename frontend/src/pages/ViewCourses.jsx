@@ -79,7 +79,7 @@ export default function ViewCourses() {
                         key: import.meta.env.VITE_RAZORPAY_API_KEY,
                         amount: orderData.data.amount,
                         currency: "INR",
-                        name: "BILAL Courses",
+                        name: "CodeVista Courses",
                         description: "COURSE ENROLLEMENT PAYMENT",
                         order_id: orderData.data.id,
                         handler: async function (response) {
