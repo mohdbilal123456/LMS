@@ -27,7 +27,7 @@ import SearchWithAi from './pages/SearchWithAi';
 import useAllCourses from './customHooks/getAllCourses';
 import NoPage from './components/NoPage';
 
-export const serverUrl = 'http://localhost:8000'
+export const serverUrl = 'https://lms-5bh1.onrender.com'
 
 function App() {
 
