@@ -154,7 +154,7 @@ export default function EditCourse() {
             </h2>
           </div>
           <button
-            onClick={() => navigate("/lectures")}
+            
             className="bg-black text-white text-sm px-4 py-2 
             rounded-md hover:bg-gray-800 transition"
             onClick={()=>navigate(`/createlecture/${selectCourse?._id}`)}

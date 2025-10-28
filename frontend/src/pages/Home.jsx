@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from '../components/Nav'
-import home from '../assets/images/hero.jpg'
+import home from '../assets/images/hero1.webp'
 import { useNavigate } from 'react-router-dom';
 import ai from '../assets/images/ai.png'
 import ai1 from '../assets/images/SearchAi.png'
