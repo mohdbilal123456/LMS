@@ -52,8 +52,8 @@ export const signUp = async (req, res) => {
             const token = genToken(user._id);
             res.cookie("token", token, {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: "lax",
+                  secure: true,
+                  sameSite: "none",
                   maxAge: 5 * 24 * 60 * 60 * 1000,
             });
 
@@ -91,8 +91,8 @@ export const Login = async (req, res) => {
             const token = genToken(user._id);
             res.cookie("token", token, {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: "lax",
+                  secure: true,
+                  sameSite: "none",
                   maxAge: 5 * 24 * 60 * 60 * 1000,
             });
 
@@ -107,8 +107,8 @@ export const LogOut = async (req, res) => {
       try {
             await res.clearCookie("token", {
                   httpOnly: true,
-                  secure: false,       
-                  sameSite: "lax",   // must match cookie setup at login
+                  secure: true,
+                  sameSite: "none",
             });
             return res.status(200).json({ message: "logOut Successfully" })
       }
@@ -161,8 +161,8 @@ export const googleAuth = async (req, res) => {
             const token = genToken(user._id);
             res.cookie("token", token, {
                   httpOnly: true,
-                  secure: false,
-                  sameSite: "lax",
+                  secure: true,
+                  sameSite: "none",
                   maxAge: 5 * 24 * 60 * 60 * 1000,
             });
 
