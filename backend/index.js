@@ -25,7 +25,9 @@ app.use(cors({
 app.get('/',(req,res)=>{
       res.send("Hello Server")
 })
-
+app.get('/loaderio-2528d23c3e1894b40dcf80897cb572f6.txt', (req, res) => {
+  res.send('loaderio-2528d23c3e1894b40dcf80897cb572f6');
+});
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/course',courseRouter)
