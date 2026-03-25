@@ -15,7 +15,8 @@ function Nav() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { userData } = useSelector((state) => state.user)
+  const { userData, loadingUser } = useSelector((state) => state.user)
+
   console.log('navuserData', userData)
 
   // 🔹 Logout handler
@@ -40,63 +41,68 @@ function Nav() {
 
   // 🔹 Render profile avatar / initials / loading icon
   const renderProfileIcon = () => {
-    if (!userData) {
+    if (loadingUser) {
       return (
-        <div className='animate-pulse flex items-center justify-center'>
-          <IoMdPerson className='w-[30px] h-[30px] fill-white' />
+        <div className="animate-pulse flex items-center justify-center">
+          <IoMdPerson className="w-[30px] h-[30px] fill-gray-300" />
         </div>
       )
+    }
+
+    if (!userData) {
+      return <IoMdPerson className="w-[30px] h-[30px] fill-white" />
     }
 
     if (userData.photoUrl) {
       return (
         <img
           src={userData.photoUrl}
-          alt='Profile'
-          className='w-full h-full object-cover'
+          alt="Profile"
+          className="w-full h-full object-cover"
         />
       )
     }
 
     if (userData.name) {
       return (
-        <span className='text-white font-bold'>
-          {userData === undefined ? null : (
-            userData ? (
-              <span className='text-white font-bold'>
-                {userData.name.trim().charAt(0).toUpperCase()}
-              </span>
-            ) : (
-              <IoMdPerson className='w-[30px] h-[30px] fill-white' />
-            )
-          )}
-
+        <span className="text-white font-bold">
+          {userData.name.trim().charAt(0).toUpperCase()}
         </span>
       )
     }
 
-    return <IoMdPerson className='w-[30px] h-[30px] fill-white' />
+    return <IoMdPerson className="w-[30px] h-[30px] fill-white" />
   }
 
+
+  if (loadingUser) {
+    return (
+      <div className="h-[70px] w-full flex items-center justify-center bg-black text-white">
+        Loading...
+      </div>
+    )
+  }
+
+
   return (
-    <div className='overflow-x-hidden'>
+    <div className="overflow-x-hidden">
       {/* Navbar */}
-      <nav className='fixed top-0 left-0 w-full h-[70px] px-4 py-2 flex items-center justify-between bg-[#00000047] backdrop-blur-sm z-20'>
+      <nav className="fixed top-0 left-0 w-full h-[70px] px-4 py-2 flex items-center justify-between bg-[#00000047] backdrop-blur-sm z-20">
         {/* Logo */}
-        <div className='flex items-center p-3 lg:pl-12 w-[40%] lg:w-[20%]'>
+        <div className="flex items-center p-3 lg:pl-12 w-[40%] lg:w-[20%]">
           <img
             src={logo}
-            alt='logo'
-            className='w-[45px] sm:w-[60px] border-2 border-white cursor-pointer rounded-full'
+            alt="logo"
+            className="w-[45px] sm:w-[60px] border-2 border-white cursor-pointer rounded-full"
             onClick={() => navigate('/')}
           />
         </div>
 
         {/* Desktop Menu */}
-        <div className='hidden lg:flex items-center justify-center gap-4 w-[40%]'>
+        <div className="hidden lg:flex items-center justify-center gap-4 w-[40%]">
           <div
             onClick={() => setShowPro((prev) => !prev)}
-            className='w-[50px] h-[50px] rounded-full flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer overflow-hidden'
+            className="w-[50px] h-[50px] rounded-full flex items-center justify-center text-[20px] border-2 bg-black border-white cursor-pointer overflow-hidden"
           >
             {renderProfileIcon()}
           </div>
@@ -104,23 +110,31 @@ function Nav() {
           {userData?.role === 'educator' && (
             <button
               onClick={() => navigate('/dashboard')}
-              className='px-5 py-2 border-2 border-white text-white rounded-[10px] bg-black text-[18px] hover:bg-gray-800 transition'
+              className="px-5 py-2 border-2 border-white text-white rounded-[10px] bg-black text-[18px] hover:bg-gray-800 transition"
             >
               Dashboard
             </button>
           )}
 
-          {!userData ? (
+          {/* ✅ FIXED LOGIN/LOGOUT/LOADING SECTION */}
+          {loadingUser ? (
+            <button
+              disabled
+              className="px-5 py-2 border-2 border-gray-500 text-gray-400 rounded-[10px] text-[18px] cursor-not-allowed"
+            >
+              Loading...
+            </button>
+          ) : !userData ? (
             <button
               onClick={() => navigate('/login')}
-              className='px-5 py-2 border-2 border-white text-white rounded-[10px] bg-[#000000d5] text-[18px]'
+              className="px-5 py-2 border-2 border-white text-white rounded-[10px] bg-[#000000d5] text-[18px]"
             >
               Login
             </button>
           ) : (
             <button
               onClick={handleLogout}
-              className='px-5 py-2 bg-white text-black rounded-[10px] text-[18px] shadow-sm shadow-black hover:bg-gray-100 transition'
+              className="px-5 py-2 bg-white text-black rounded-[10px] text-[18px] shadow-sm shadow-black hover:bg-gray-100 transition"
             >
               Logout
             </button>
@@ -129,22 +143,22 @@ function Nav() {
 
         {/* Hamburger Menu (Mobile) */}
         <GiHamburgerMenu
-          className='w-[30px] h-[30px] lg:hidden fill-white cursor-pointer'
+          className="w-[30px] h-[30px] lg:hidden fill-white cursor-pointer"
           onClick={() => setShowHam((prev) => !prev)}
         />
       </nav>
 
       {/* Profile dropdown (Desktop) */}
       {showPro && (
-        <div className='fixed z-50 top-[80px] right-[14%] flex flex-col items-center gap-2 bg-white px-4 py-3 rounded-md border-2 border-black shadow-md'>
+        <div className="fixed z-50 top-[80px] right-[14%] flex flex-col items-center gap-2 bg-white px-4 py-3 rounded-md border-2 border-black shadow-md">
           <span
-            className='bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 cursor-pointer'
+            className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 cursor-pointer"
             onClick={handleProfile}
           >
             My Profile
           </span>
           <span
-            className='bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 cursor-pointer'
+            className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 cursor-pointer"
             onClick={() => navigate('/mycourses')}
           >
             My Courses
@@ -154,27 +168,28 @@ function Nav() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-[#000000d6] flex flex-col items-center justify-center gap-6 z-10 transform transition-transform duration-500 ease-in-out ${showHam ? 'translate-x-0' : '-translate-x-full'
-          }`}
+        className={`fixed top-0 left-0 w-full h-screen bg-[#000000d6] flex flex-col items-center justify-center gap-6 z-10 transform transition-transform duration-500 ease-in-out ${
+          showHam ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
         <GiSplitCross
-          className='w-[35px] h-[35px] fill-white absolute top-5 right-5 cursor-pointer'
+          className="w-[35px] h-[35px] fill-white absolute top-5 right-5 cursor-pointer"
           onClick={() => setShowHam((prev) => !prev)}
         />
-        <div className='w-[50px] h-[50px] border-2 border-white bg-black rounded-full flex items-center justify-center overflow-hidden'>
+        <div className="w-[50px] h-[50px] border-2 border-white bg-black rounded-full flex items-center justify-center overflow-hidden">
           {renderProfileIcon()}
         </div>
 
         <button
           onClick={handleProfile}
-          className='w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]'
+          className="w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]"
         >
           My Profile
         </button>
 
         <button
           onClick={() => navigate('/mycourses')}
-          className='w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]'
+          className="w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]"
         >
           My Courses
         </button>
@@ -182,23 +197,30 @@ function Nav() {
         {userData?.role === 'educator' && (
           <button
             onClick={() => navigate('/dashboard')}
-            className='w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]'
+            className="w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]"
           >
             Dashboard
           </button>
         )}
 
-        {!userData ? (
+        {loadingUser ? (
+          <button
+            disabled
+            className="w-[200px] text-gray-400 border-2 border-gray-600 bg-[#000000d5] rounded-lg py-3 text-[18px] cursor-not-allowed"
+          >
+            Loading...
+          </button>
+        ) : !userData ? (
           <button
             onClick={() => navigate('/login')}
-            className='w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]'
+            className="w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]"
           >
             Login
           </button>
         ) : (
           <button
             onClick={handleLogout}
-            className='w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]'
+            className="w-[200px] text-white border-2 border-[#fdfbfb7a] bg-[#000000d5] rounded-lg py-3 text-[18px]"
           >
             Logout
           </button>

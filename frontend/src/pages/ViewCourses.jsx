@@ -16,7 +16,7 @@ export default function ViewCourses() {
 
       const { courseId } = useParams();
       const { selectedCourse, courseData } = useSelector(state => state.course);
-      console.log('all selectedCurse',selectedCourse)
+      console.log('all selectedCurse', selectedCourse)
       const dispatch = useDispatch();
       const navigate = useNavigate()
       const [selectedLecture, setSelectedLecture] = useState(null);
@@ -28,7 +28,7 @@ export default function ViewCourses() {
       const [comment, setComment] = useState('')
       const [loading, setLoading] = useState(false)
 
-      
+
 
       const fetchCourseData = () => {
             const course = courseData?.find(course => course._id === courseId);
@@ -37,9 +37,8 @@ export default function ViewCourses() {
 
       const handleReviewSubmit = async () => {
 
-            console.log('userData',userData)
-            if(!userData || !userData._id)
-            {
+            console.log('userData', userData)
+            if (!userData || !userData._id) {
                   toast.error("please Login to comment")
                   return;
             }
@@ -64,7 +63,7 @@ export default function ViewCourses() {
 
       const handleEnroll = async (courseId, userId) => {
 
-            if(!userData || !userData._id){
+            if (!userData || !userData._id) {
                   toast.error("Please Login to enroll")
                   return;
             }
@@ -173,7 +172,7 @@ export default function ViewCourses() {
 
             return (total / reviews.length).toFixed(1)
       }
-      console.log('scd',selectedCourse?.reviews)
+      console.log('scd', selectedCourse?.reviews)
       const avgRating = calculateReview(selectedCourse?.reviews)
 
       console.log('Avg Rating', avgRating)
